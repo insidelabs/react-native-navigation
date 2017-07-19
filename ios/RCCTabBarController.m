@@ -120,6 +120,12 @@
     {
       self.tabBar.clipsToBounds = [tabBarHideShadow boolValue] ? YES : NO;
     }
+
+    NSString *tabBarBackgroundImageName = tabsStyle[@"tabBarBackgroundImageName"];
+    if (tabBarBackgroundImageName)
+    {
+      self.tabBar.backgroundImage = [UIImage imageNamed:tabBarBackgroundImageName];
+    }
   }
   
   NSMutableArray *viewControllers = [NSMutableArray array];
