@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.Orientation;
+import com.reactnativenavigation.params.StatusBarTextColorScheme;
 import com.reactnativenavigation.params.StyleParams;
 
 public class StyleParamsParser {
@@ -27,11 +28,15 @@ public class StyleParamsParser {
         StyleParams result = new StyleParams(params);
         result.orientation = Orientation.fromString(params.getString("orientation", getDefaultOrientation()));
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
+        result.statusBarTextColorScheme = StatusBarTextColorScheme.fromString(params.getString("statusBarTextColorScheme"));
         result.contextualMenuStatusBarColor = getColor("contextualMenuStatusBarColor", getDefaultContextualMenuStatusBarColor());
         result.contextualMenuButtonsColor = getColor("contextualMenuButtonsColor", getDefaultContextualMenuButtonsColor());
         result.contextualMenuBackgroundColor = getColor("contextualMenuBackgroundColor", getDefaultContextualMenuBackgroundColor());
 
         result.topBarColor = getColor("topBarColor", getDefaultTopBarColor());
+        result.topBarReactView = params.getString("topBarReactView");
+        result.topBarReactViewAlignment = params.getString("topBarReactViewAlignment");
+        result.topBarReactViewInitialProps = getBundle("topBarReactViewInitialProps");
         result.titleBarHideOnScroll = getBoolean("titleBarHideOnScroll", getDefaultTitleBarHideOnScroll());
         result.topBarTransparent = getBoolean("topBarTransparent", getDefaultTopBarHidden());
         result.topBarCollapseOnScroll = getBoolean("topBarCollapseOnScroll", false);
@@ -272,5 +277,9 @@ public class StyleParamsParser {
 
     private int getInt(String key, int defaultValue) {
         return params.containsKey(key) ? params.getInt(key) : defaultValue;
+    }
+
+    private Bundle getBundle(String key) {
+        return params.containsKey(key) ? params.getBundle(key) : Bundle.EMPTY;
     }
 }

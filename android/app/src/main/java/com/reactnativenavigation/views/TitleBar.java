@@ -51,6 +51,10 @@ public class TitleBar extends Toolbar {
         addButtonsToTitleBar(navigatorEventId, menu);
     }
 
+    public int getRightButtonsWidth() {
+        return actionMenuView.getWidth();
+    }
+
     public void setLeftButton(TitleBarLeftButtonParams leftButtonParams,
                               LeftButtonOnClickListener leftButtonOnClickListener,
                               String navigatorEventId,
@@ -86,6 +90,11 @@ public class TitleBar extends Toolbar {
         setVisibility(titleBarHidden ? GONE : VISIBLE);
     }
 
+    public void setTitle(String title, StyleParams styleParams) {
+        setTitle(title);
+        centerTitle(styleParams);
+    }
+
     private Activity getActivity() {
         Context context = getContext();
         while (context instanceof ContextWrapper) {
@@ -108,7 +117,6 @@ public class TitleBar extends Toolbar {
                 if (params.titleBarTitleTextCentered) {
                     titleView.setX(ViewUtils.getWindowWidth(getActivity()) / 2 - titleView.getWidth() / 2);
                 }
-                
             }
         });
     }
