@@ -16,6 +16,8 @@
 
 @implementation RCCTabBarController
 
+NSMutableDictionary *dotMap;
+
 
 -(UIInterfaceOrientationMask)supportedInterfaceOrientations {
   return [self supportedControllerOrientations];
@@ -132,6 +134,7 @@
       self.tabBar.clipsToBounds = [tabBarHideShadow boolValue] ? YES : NO;
     }
 
+    //Inside labs: allow for the specification of a background image
     NSString *tabBarBackgroundImageName = tabsStyle[@"tabBarBackgroundImageName"];
     if (tabBarBackgroundImageName)
     {
@@ -140,6 +143,7 @@
   }
   
   NSMutableArray *viewControllers = [NSMutableArray array];
+  NSInteger tabIndex = 0;
   
   // go over all the tab bar items
   for (NSDictionary *tabItemLayout in children)
@@ -212,12 +216,14 @@
     NSObject *badge = tabItemLayout[@"props"][@"badge"];
     if (badge == nil || [badge isEqual:[NSNull null]])
     {
-      viewController.tabBarItem.badgeValue = nil;
+      [self removeDot:tabIndex];
     }
     else
     {
-      viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
+      [self addDot:viewController atIndex:tabIndex];
     }
+    
+    tabIndex++;
     
     [viewControllers addObject:viewController];
   }
@@ -226,6 +232,9 @@
   self.viewControllers = viewControllers;
   
   [self setRotation:props];
+  
+  //Inside Labs: init a mutable to store references to the dots
+  dotMap = [NSMutableDictionary dictionary];
   
   return self;
 }
@@ -258,11 +267,11 @@
       
       if (badge == nil || [badge isEqual:[NSNull null]])
       {
-        viewController.tabBarItem.badgeValue = nil;
+        [self removeDot:tabIndex.integerValue];
       }
       else
       {
-        viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
+        [self addDot:viewController atIndex:tabIndex.integerValue];
       }
     }
   }
@@ -401,6 +410,33 @@
   }
 }
 
+-(void)addDot:(UIViewController *)viewController atIndex:(NSInteger)tabIndex {
+  UIView *oldDot = dotMap[@(tabIndex)];
+  
+  if (oldDot) {
+    [oldDot removeFromSuperview];
+  }
+  
+  float halfItemWidth = CGRectGetWidth(self.view.bounds) / ([self.tabBar.items count] * 2);
+  float xOffset = halfItemWidth * (tabIndex * 2 + 1);
+  float imageHalfWidth = viewController.tabBarItem.selectedImage.size.width / 2;
+  
+  
+  UIView *dot = [[UIView alloc] initWithFrame:CGRectMake(xOffset + imageHalfWidth, 5.0, 10.0, 10.0)];
+  dot.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:204.0/255.0 blue:0 alpha:1.0];
+  dot.layer.cornerRadius = 5.0;
+  
+  [self.tabBar addSubview:dot];
+  dotMap[@(tabIndex)] = dot;
+}
+
+-(void)removeDot:(NSInteger)tabIndex {
+  UIView *dot = dotMap[@(tabIndex)];
+  
+  if (dot) {
+    [dot removeFromSuperview];
+  }
+}
 
 
 @end
