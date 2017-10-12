@@ -230,6 +230,13 @@ NSMutableDictionary *dotMap;
   
   // replace the tabs
   self.viewControllers = viewControllers;
+
+  NSNumber *initialTab = tabsStyle[@"initialTabIndex"];
+  if (initialTab)
+  {
+    NSInteger initialTabIndex = initialTab.integerValue;
+    [self setSelectedIndex:initialTabIndex];
+  }
   
   [self setRotation:props];
   
@@ -272,6 +279,11 @@ NSMutableDictionary *dotMap;
       else
       {
         [self addDot:viewController atIndex:tabIndex.integerValue];
+
+        //NSString *badgeColor = actionParams[@"badgeColor"];
+        //UIColor *color = badgeColor != (id)[NSNull null] ? [RCTConvert UIColor:badgeColor] : nil;
+        //viewController.tabBarItem.badgeColor = color;
+        //viewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%@", badge];
       }
     }
   }
