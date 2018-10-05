@@ -173,6 +173,10 @@ class Navigator {
     }
     return res.screenId === this.screenInstanceID;
   }
+
+  hasRegisteredScreen(screenID) {
+    return Navigation.hasRegisteredScreen(screenID);
+  }
 }
 
 class Screen extends Component {
