@@ -174,6 +174,12 @@ function getCurrentlyVisibleScreenId() {
   return platformSpecific.getCurrentlyVisibleScreenId();
 }
 
+function hasRegisteredScreen(screenID) {
+  const generator = registeredScreens[screenID];
+
+  return !!generator;
+}
+
 export default {
   getRegisteredScreen,
   getCurrentlyVisibleScreenId,
@@ -192,5 +198,6 @@ export default {
   clearEventHandler: clearEventHandler,
   handleDeepLink: handleDeepLink,
   isAppLaunched: isAppLaunched,
-  isRootLaunched: isRootLaunched
+  isRootLaunched: isRootLaunched,
+  hasRegisteredScreen: hasRegisteredScreen
 };
