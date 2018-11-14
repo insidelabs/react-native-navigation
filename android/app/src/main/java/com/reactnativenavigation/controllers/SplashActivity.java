@@ -12,10 +12,12 @@ import com.reactnativenavigation.react.ReactDevPermission;
 
 public abstract class SplashActivity extends AppCompatActivity {
     public static boolean isResumed = false;
+    public static SplashActivity instance = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         setSplashLayout();
         IntentDataHandler.saveIntentData(getIntent());
     }
